@@ -11,13 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
+    Route::get('show/{id}', 'UserController@show')->name('users.show');
+    Route::get('edit/{id}', 'UserController@edit')->name('users.edit');
+    Route::post('update/{id}', 'UserController@update')->name('users.update');
 });
 
-Route::get('/test', function () {
-    $test = "テスト";
-    $debug = "デバッグ";
-    $testOfDebug = "${debug}の${test}用です！！！";
-    return view('welcome');
+Route::get('/', function () {
+    return view('top');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/matching', 'MatchingController@index')->name('matching');
+
+Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
+    Route::post('show', 'ChatController@show')->name('chat.show');
+    Route::post('chat', 'ChatController@chat')->name('chat.chat');
 });

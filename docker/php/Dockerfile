@@ -17,8 +17,9 @@ RUN apk update && \
   zip \
   unzip \
   vim \
-  autoconf gcc g++ make && \
-  docker-php-ext-install pdo_mysql bcmath && \
+  autoconf gcc g++ make libzip-dev libpng-dev libjpeg-turbo-dev freetype-dev && \
+  docker-php-ext-configure gd --with-jpeg=/usr && \
+  docker-php-ext-install pdo_mysql bcmath gd && \
   pecl install xdebug && \
   docker-php-ext-enable xdebug
 
